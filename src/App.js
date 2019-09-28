@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Route, Switch } from "react-router-dom";
 
-function App() {
+import Header from "./Header";
+import Dashboard from "./Dashboard";
+import Login from "./Login";
+import Users from "./Users";
+import Uploads from "./Uploads";
+
+const App = () => {
+  const [isAuth, setIsAuth] = useState(false);
+  
+  if (isAuth) {
+    return (
+      <div className="wrapper">
+        <Header auth={setIsAuth} />
+        <div className="container">
+          <Switch>
+            {/* <Route exact path="/:any" component={Dashboard} /> */}
+            <Route path="/admin" component={Dashboard} />
+            <Route exact path="/users" component={Users} />
+            <Route exact path="/uploads" component={Uploads} />
+          </Switch>
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Route
+        exact
+        path="/"
+        component={props => <Login {...props} auth={setIsAuth} />}
+      />
+      <Route
+        path="/:anything"
+        component={props => <Login {...props} auth={setIsAuth} />}
+      />
+    </>
   );
-}
+};
 
 export default App;
